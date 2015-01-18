@@ -1,5 +1,10 @@
 package com.kwanzoo.recurly.test;
 
+import com.kwanzoo.recurly.*;
+import junit.framework.TestCase;
+import org.apache.commons.lang.RandomStringUtils;
+import org.junit.Test;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -7,21 +12,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
-
-import junit.framework.TestCase;
-
-import org.apache.commons.lang.RandomStringUtils;
-import org.junit.Test;
-
-import com.kwanzoo.recurly.Account;
-import com.kwanzoo.recurly.Base;
-import com.kwanzoo.recurly.BillingInfo;
-import com.kwanzoo.recurly.Charge;
-import com.kwanzoo.recurly.CreditCard;
-import com.kwanzoo.recurly.InvoiceDetailed;
-import com.kwanzoo.recurly.Invoices;
-import com.kwanzoo.recurly.Subscription;
-import com.kwanzoo.recurly.TransparentResult;
 
 public class RecurlyTest extends TestCase {
 
@@ -44,10 +34,11 @@ public class RecurlyTest extends TestCase {
 			String propsFilePath = System.getProperty("user.home") + "/" + "recurly_auth";
 			System.out.println("Reading properties from " + propsFilePath);
 			props.load(new FileInputStream(propsFilePath));
-			
-			String username = props.getProperty("recurly_username");
+
+			String subdomain = props.getProperty("recurly_subdomain");
+//			String username = props.getProperty("recurly_username");
 			String password = props.getProperty("recurly_password");
-			System.out.println("Using recurly credentials : " + username + "/" + password);
+			System.out.println("Using recurly credentials : " + subdomain + " api key=" + password);
 			
 			String plansStr = props.getProperty("plans");
 			plans = plansStr.split(",");
@@ -58,7 +49,7 @@ public class RecurlyTest extends TestCase {
 			
 			currentYear = Integer.parseInt(new SimpleDateFormat("yyyy").format(new Date()));
 			
-			Base.setAuth("app", username, password);
+			Base.setAuth(subdomain, password);
 		}
 		catch (IOException e) {
 			e.printStackTrace();
